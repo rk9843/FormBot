@@ -2,12 +2,9 @@ import os
 import os.path
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+import pyautogui
 import time
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
+
 
 def setup():
     configFile = open('Config.txt', 'w+')
@@ -36,7 +33,6 @@ def setup():
     getPassword()
     configFile.close()
 
-
 def fillForm():
     configFile = open('Config.txt', 'r')
     username = configFile.readline().rstrip('\n')
@@ -46,15 +42,16 @@ def fillForm():
     driver.find_element_by_xpath('//*[@id="password"]').send_keys(password)
     driver.find_element_by_xpath('//*[@id="userInput"]/form/button').click()
     driver.get('https://dailyhealth.rit.edu/assessment')
-    
-    
-    
+    driver.fullscreen_window()
+    pyautogui.click(1000, 750)    
 
 if __name__ == "__main__":
     if not os.path.exists('./Config.txt'):
         setup()
+    
     driver = webdriver.Chrome(ChromeDriverManager().install())
     driver.get('https://dailyhealth.rit.edu/')
+    
     fillForm()
     time.sleep(10)
-    #driver.close()
+    driver.close()
